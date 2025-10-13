@@ -1,7 +1,7 @@
 import { sequelize } from "../database/sequelize-client.js";
 import { DataTypes, Model } from "sequelize";
 
-export default class Post extends Model {}
+export class Post extends Model {}
 
 Post.init(
   {

@@ -2,6 +2,7 @@ import { Category } from "./category.model.js";
 import { Comment } from "./comment.model.js";
 import { Post } from "./post.model.js";
 import { User } from "./user.model.js";
+import { sequelize } from "../database/sequelize-client.js";
 
 User.hasMany(Post, {
   as: "posts",
@@ -42,4 +43,4 @@ Comment.belongsTo(Post, {
   foreignKey: "post_id",
 });
 
-export { User, Post, Category, Comment };
+export { User, Post, Category, Comment, sequelize };

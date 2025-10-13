@@ -2,7 +2,7 @@ import { sequelize } from "../database/sequelize-client.js";
 
 import { DataTypes, Model } from "sequelize";
 
-export default class Category extends Model {}
+export class Category extends Model {}
 
 Category.init(
   {
