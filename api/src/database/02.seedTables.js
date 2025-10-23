@@ -1,6 +1,7 @@
 import { User, Post, Category, Comment } from "../models/associations.js";
 import { sequelize } from "../database/sequelize-client.js";
 import argon2 from "argon2";
+import { auth } from "express-oauth2-jwt-bearer";
 
 seedDatabase();
 
@@ -21,14 +22,16 @@ async function seedDatabase() {
     // 2. Créer des utilisateurs
     console.log("👥 Creating users...");
     const alice = await User.create({
+      auth0_id: "auth0|68fa9cd68fb878d86bf64a7c",
       firstname: "Alice",
       lastname: "Dupont",
-      email: "alice@example.com",
+      email: "test@test.com",
       password: await argon2.hash("password123"),
       pseudo: "alice_dev",
     });
 
     const bob = await User.create({
+      auth0_id: "auth0|bob456",
       firstname: "Bob",
       lastname: "Martin",
       email: "bob@example.com",
@@ -37,6 +40,7 @@ async function seedDatabase() {
     });
 
     const charlie = await User.create({
+      auth0_id: "auth0|charlie789",
       firstname: "Charlie",
       lastname: "Durand",
       email: "charlie@example.com",

@@ -9,6 +9,11 @@ User.init(
       type: DataTypes.STRING(50),
       allowNull: false,
     },
+    auth0_id: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      unique: true,
+    },
     lastname: {
       type: DataTypes.STRING(50),
       allowNull: false,
@@ -17,10 +22,6 @@ User.init(
       type: DataTypes.STRING(100),
       allowNull: false,
       unique: true,
-    },
-    password: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
     },
     pseudo: {
       type: DataTypes.STRING(30),
