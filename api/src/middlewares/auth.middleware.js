@@ -3,8 +3,6 @@ import { auth } from "express-oauth2-jwt-bearer";
 import "dotenv/config";
 import { User } from "../models/user.model.js";
 
-const app = express();
-
 console.log("AUTH_AUDIENCE:", process.env.AUTH_AUDIENCE);
 console.log("AUTH_ISSUER_BASE_URL:", process.env.AUTH_ISSUER_BASE_URL);
 

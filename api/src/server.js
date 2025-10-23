@@ -3,13 +3,14 @@ import "dotenv/config";
 import cors from "cors";
 import { jwtCheck } from "./middlewares/auth.middleware.js";
 import { getUserFromToken } from "./middlewares/auth.middleware.js";
-// import { authRouter } from "./routes/auth.route.js";
+import { userRouter } from "./routes/user.route.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 // app.use("/auth", authRouter);
+app.use("/users", userRouter);
 app.get("/test-auth", jwtCheck, getUserFromToken, (req, res) => {
   res.json(req.auth);
 });
