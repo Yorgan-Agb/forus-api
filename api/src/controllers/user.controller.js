@@ -28,3 +28,46 @@ export const completeProfile = async (req, res) => {
       .json({ error: error.message });
   }
 };
+
+export const seeMyProfile = async (req, res) => {
+  try {
+    const user = req.user;
+
+    if (user) {
+      res.status(StatusCodes.OK).json({
+        firstname: user.firstname,
+        lastname: user.lastname,
+        pseudo: user.pseudo,
+        email: user.email,
+      });
+    } else {
+      res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: error.message });
+  }
+};
+
+export const modifyProfile = async (req, res) => {
+  try {
+    const user = req.user;
+    const { firstname, lastname, pseudo } = req.body;
+
+    if (user) {
+      user.firstname = firstname;
+      user.lastname = lastname;
+      user.pseudo = pseudo;
+
+      await user.save();
+      res.status(StatusCodes.OK).json(user);
+    } else {
+      res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: error.message });
+  }
+};
