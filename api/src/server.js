@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import { jwtCheck } from "./middlewares/auth.middleware.js";
 import { getUserFromToken } from "./middlewares/auth.middleware.js";
 import { userRouter } from "./routes/user.route.js";
+import { categoryRouter } from "./routes/category.route.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // app.use("/auth", authRouter);
 app.use("/profile", userRouter);
+app.use("/category", categoryRouter);
 app.get("/test-auth", jwtCheck, getUserFromToken, (req, res) => {
   res.json(req.auth);
 });
