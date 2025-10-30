@@ -1,4 +1,4 @@
-import { StatusCodes } from "http-status-codes";
+import { StatusCodes } from 'http-status-codes';
 
 export const checkBody = (schema, body, req, res, next) => {
   const validation = schema.validate(body);

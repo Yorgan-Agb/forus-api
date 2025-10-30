@@ -1,6 +1,6 @@
-import { sequelize } from "../database/sequelize-client.js";
+import { sequelize } from '../database/sequelize-client.js';
 
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model } from 'sequelize';
 
 export class Category extends Model {}
 
@@ -13,6 +13,6 @@ Category.init(
   },
   {
     sequelize,
-    modelName: "Category",
+    modelName: 'Category',
   }
 );

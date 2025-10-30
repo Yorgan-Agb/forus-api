@@ -1,15 +1,15 @@
-import express from "express";
-import { auth } from "express-oauth2-jwt-bearer";
-import "dotenv/config";
-import { User } from "../models/user.model.js";
+import express from 'express';
+import { auth } from 'express-oauth2-jwt-bearer';
+import 'dotenv/config';
+import { User } from '../models/user.model.js';
 
-console.log("AUTH_AUDIENCE:", process.env.AUTH_AUDIENCE);
-console.log("AUTH_ISSUER_BASE_URL:", process.env.AUTH_ISSUER_BASE_URL);
+console.log('AUTH_AUDIENCE:', process.env.AUTH_AUDIENCE);
+console.log('AUTH_ISSUER_BASE_URL:', process.env.AUTH_ISSUER_BASE_URL);
 
 export const jwtCheck = auth({
   audience: process.env.AUTH_AUDIENCE,
   issuerBaseURL: process.env.AUTH_ISSUER_BASE_URL,
-  tokenSigningAlg: "RS256",
+  tokenSigningAlg: 'RS256',
 });
 
 export const getUserFromToken = async (req, res, next) => {
@@ -26,12 +26,12 @@ export const getUserFromToken = async (req, res, next) => {
       req.user = findUser;
       return next();
     } else {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: 'User not found' });
     }
   } catch (error) {
-    console.error("Error dans getUserFromToken:", error);
+    console.error('Error dans getUserFromToken:', error);
     return res.status(500).json({
-      message: "Internal server error",
+      message: 'Internal server error',
       error: error.message,
     });
   }
@@ -50,9 +50,9 @@ export const isExistingUser = async (req, res, next) => {
       return next();
     }
   } catch (error) {
-    console.error("Error dans isExistingUser:", error);
+    console.error('Error dans isExistingUser:', error);
     return res.status(500).json({
-      message: "Internal server error",
+      message: 'Internal server error',
       error: error.message,
     });
   }

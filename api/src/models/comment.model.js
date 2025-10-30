@@ -1,5 +1,5 @@
-import { sequelize } from "../database/sequelize-client.js";
-import { DataTypes, Model } from "sequelize";
+import { sequelize } from '../database/sequelize-client.js';
+import { DataTypes, Model } from 'sequelize';
 
 export class Comment extends Model {}
 
@@ -12,6 +12,6 @@ Comment.init(
   },
   {
     sequelize,
-    modelName: "Comment",
+    modelName: 'Comment',
   }
 );

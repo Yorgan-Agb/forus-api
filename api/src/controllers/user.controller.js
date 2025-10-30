@@ -1,6 +1,6 @@
-import "dotenv/config";
-import { User } from "../models/user.model.js";
-import { StatusCodes } from "http-status-codes";
+import 'dotenv/config';
+import { User } from '../models/user.model.js';
+import { StatusCodes } from 'http-status-codes';
 
 export const completeProfile = async (req, res) => {
   try {
@@ -20,7 +20,7 @@ export const completeProfile = async (req, res) => {
     } else {
       return res
         .status(StatusCodes.CONFLICT)
-        .json({ message: "User already exists" });
+        .json({ message: 'User already exists' });
     }
   } catch (error) {
     return res
@@ -41,7 +41,7 @@ export const seeMyProfile = async (req, res) => {
         email: user.email,
       });
     } else {
-      res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
+      res.status(StatusCodes.NOT_FOUND).json({ message: 'User not found' });
     }
   } catch (error) {
     res
@@ -63,8 +63,39 @@ export const modifyProfile = async (req, res) => {
       await user.save();
       res.status(StatusCodes.OK).json(user);
     } else {
-      res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
+      res.status(StatusCodes.NOT_FOUND).json({ message: 'User not found' });
     }
+  } catch (error) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: error.message });
+  }
+};
+
+export const registration = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    let data = JSON.stringify({
+      email: email,
+      email_verified: false,
+      password: password,
+      verify_email: false,
+    });
+
+    const response = await fetch(
+      `https://${process.env.AUTH_ISSUER_BASE_URL}/api/v2/users`,
+      {
+        method: 'POST',
+        maxBodyLength: Infinity,
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: data,
+      }
+    );
+    const result = await response.json();
+    console.log(result);
   } catch (error) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)

@@ -1,0 +1,36 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env.docker
+    ports:
+      - "3000:3000"
+    container_name: forus_api
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    container_name: forus_db
+    image: postgres:18
+    environment:
+      POSTGRES_USER: YOUR_USERNAME
+      POSTGRES_PASSWORD: YOUR_PASSWORD
+      POSTGRES_DB: YOUR_DATABASE
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U YOUR_USERNAME"]
+      interval: 2s
+      timeout: 1s
+      retries: 5
+    volumes:
+      - ./data:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
