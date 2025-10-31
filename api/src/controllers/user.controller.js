@@ -6,7 +6,9 @@ export const completeProfile = async (req, res) => {
   try {
     const auth0_id = req.auth.payload.sub;
     const { firstname, lastname, pseudo } = req.body;
-    const email = req.auth.payload[`${process.env.AUTH_AUDIENCE}/email`];
+    const email = req.auth.payload.email;
+    console.log('Payload complet:', req.auth.payload);
+    console.log('Email cherché:', req.auth.payload[`${process.env.AUTH_AUDIENCE}/email`]);
     const user = await User.findOne({ where: { auth0_id } });
     if (!user) {
       const newUser = await User.create({

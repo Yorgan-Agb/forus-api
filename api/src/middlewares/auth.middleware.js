@@ -1,5 +1,5 @@
-import express from 'express';
 import { auth } from 'express-oauth2-jwt-bearer';
+
 import 'dotenv/config';
 import { User } from '../models/user.model.js';
 

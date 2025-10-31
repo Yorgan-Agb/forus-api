@@ -28,7 +28,7 @@ export const registration = async (req, res) => {
   try {
     const { email, password } = req.body;
     const connexion = process.env.AUTH_DB_CONNECTION;
-
+    const roleId = process.env.USER_ROLE_ID;
     const managementToken = await generateManagementApiToken();
     let payload = JSON.stringify({
       email: email,
@@ -46,12 +46,51 @@ export const registration = async (req, res) => {
       },
       body: payload,
     });
-    if (response.status === 201) {
-      const result = await response.json();
-      return res.status(StatusCodes.CREATED).json(result);
-    } else {
-      const errorResult = await response.json();
-      return res.status(response.status).json(errorResult);
+    const result = await response.json();
+    const userId = result.user_id;
+    const giveRole = await fetch(
+      `${process.env.AUTH_ISSUER_BASE_URL}/api/v2/users/${userId}/roles`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${managementToken}`,
+          cache: 'no-cache',
+        },
+        body: JSON.stringify({
+          roles: [roleId],
+        }),
+      }
+    );
+
+    if (response.ok && giveRole.ok) {
+      const tokenResponse = await fetch(`${process.env.AUTH_ISSUER_BASE_URL}/oauth/token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          grant_type: 'password',
+          client_id: process.env.AUTH_CLIENT_ID,
+          client_secret: process.env.AUTH_CLIENT_SECRET,
+          audience: process.env.AUTH_AUDIENCE,
+          username: email,
+          password: password,
+          scope: 'openid profile email',
+        }),
+      });
+      const tokenData = await tokenResponse.json();
+      if (tokenResponse.ok) {
+        return res.status(StatusCodes.CREATED).json({
+          message: 'User registered successfully',
+          access_token: tokenData.access_token,
+          id_token: tokenData.id_token,
+        });
+      } else {
+        return res
+          .status(tokenResponse.status)
+          .json({ message: 'Error obtaining tokens', error: tokenData });
+      }
     }
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
