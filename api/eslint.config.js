@@ -1,32 +1,39 @@
-import js from "@eslint/js";
-import globals from "globals";
-import { defineConfig } from "eslint/config";
-import prettier from "eslint-config-prettier";
+import js from '@eslint/js';
+import globals from 'globals';
+import { defineConfig } from 'eslint/config';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import eslintPluginPrettier from 'eslint-plugin-prettier';
 
 export default defineConfig([
   js.configs.recommended,
-  prettier,
+
+  eslintConfigPrettier,
   {
+    files: ['**/*.{js,ts}'],
+    ignores: ['node_modules', 'dist', 'build'],
     languageOptions: {
       globals: globals.node,
-      ecmaVersion: "latest",
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+    },
+
+    plugins: {
+      prettier: eslintPluginPrettier,
     },
     rules: {
-      // Active Prettier comme règle ESLint
-      "prettier/prettier": [
-        "error",
+      'prettier/prettier': [
+        'error',
         {
-          singleQuote: true,
           semi: true,
-          trailingComma: "es5",
+          singleQuote: true,
+          trailingComma: 'es5',
           tabWidth: 2,
           printWidth: 100,
         },
       ],
 
-      // Bonnes pratiques Express
-      "no-console": "off",
-      "no-unused-vars": ["warn", { argsIgnorePattern: "next" }],
+      'no-console': 'off',
+      'no-unused-vars': ['warn', { argsIgnorePattern: 'next' }],
     },
   },
 ]);

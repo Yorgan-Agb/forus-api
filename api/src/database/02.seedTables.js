@@ -49,14 +49,14 @@ async function seedDatabase() {
     // Créer des posts
     console.log('📝 Creating posts...');
     const post1 = await Post.create({
-      post: 'La relativité générale explique comment la gravité déforme l\'espace-temps. C\'est fascinant !',
+      post: "La relativité générale explique comment la gravité déforme l'espace-temps. C'est fascinant !",
       date: new Date(),
       user_id: alice.id,
       category_id: sciences.id,
     });
 
     const post2 = await Post.create({
-      post: 'JavaScript ou TypeScript pour un projet backend ? Qu\'en pensez-vous ?',
+      post: "JavaScript ou TypeScript pour un projet backend ? Qu'en pensez-vous ?",
       date: new Date(),
       user_id: bob.id,
       category_id: technologie.id,
@@ -86,8 +86,7 @@ async function seedDatabase() {
     // Créer des commentaires
     console.log('💬 Creating comments...');
     await Comment.create({
-      comment:
-        'Très intéressant ! J\'aimerais en savoir plus sur la courbure de l\'espace-temps.',
+      comment: "Très intéressant ! J'aimerais en savoir plus sur la courbure de l'espace-temps.",
       user_id: bob.id,
       post_id: post1.id,
     });
@@ -99,8 +98,7 @@ async function seedDatabase() {
     });
 
     await Comment.create({
-      comment:
-        'TypeScript pour moi ! Le typage statique évite beaucoup d\'erreurs.',
+      comment: "TypeScript pour moi ! Le typage statique évite beaucoup d'erreurs.",
       user_id: alice.id,
       post_id: post2.id,
     });
@@ -112,13 +110,13 @@ async function seedDatabase() {
     });
 
     await Comment.create({
-      comment: 'Monet c\'est magnifique ! Tu as visité son jardin à Giverny ?',
+      comment: "Monet c'est magnifique ! Tu as visité son jardin à Giverny ?",
       user_id: bob.id,
       post_id: post3.id,
     });
 
     await Comment.create({
-      comment: 'Super article ! L\'immunothérapie va révolutionner la médecine.',
+      comment: "Super article ! L'immunothérapie va révolutionner la médecine.",
       user_id: charlie.id,
       post_id: post4.id,
     });
