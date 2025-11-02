@@ -1,6 +1,5 @@
 import { Category } from '../models/category.model.js';
 import { StatusCodes } from 'http-status-codes';
-import { requiredScopes } from 'express-oauth2-jwt-bearer';
 
 export const getAllCategories = async (req, res) => {
   try {
