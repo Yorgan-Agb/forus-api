@@ -19,3 +19,17 @@ export const createCategory = async (req, res) => {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
   }
 };
+
+export const deleteCategory = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedCategory = await Category.destroy({ where: { id } });
+    if (deletedCategory) {
+      res.status(StatusCodes.OK).json({ message: 'Category deleted successfully' });
+    } else {
+      res.status(StatusCodes.NOT_FOUND).json({ message: 'Category not found' });
+    }
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: error.message });
+  }
+};
