@@ -18,8 +18,6 @@ export const getUserFromToken = async (req, res, next) => {
 
     const auth0_id = payload.sub;
 
-    const email = payload[`${process.env.AUTH_AUDIENCE}/email`];
-
     const findUser = await User.findOne({ where: { auth0_id } });
 
     if (findUser) {
@@ -35,26 +33,4 @@ export const getUserFromToken = async (req, res, next) => {
       error: error.message,
     });
   }
-};
-
-export const isExistingUser = async (req, res, next) => {
-  try {
-    const payload = req.auth.payload || req.auth;
-
-    const auth0_id = payload.sub;
-
-    const email = payload[`${process.env.AUTH_AUDIENCE}/email`];
-    const findUser = await User.findOne({ where: { auth0_id } });
-    if (findUser) {
-      req.user = findUser;
-      return next();
-    }
-  } catch (error) {
-    console.error('Error dans isExistingUser:', error);
-    return res.status(500).json({
-      message: 'Internal server error',
-      error: error.message,
-    });
-  }
-  next();
 };

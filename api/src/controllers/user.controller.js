@@ -6,17 +6,19 @@ export const completeProfile = async (req, res) => {
   try {
     const auth0_id = req.auth.payload.sub;
     const { firstname, lastname, pseudo } = req.body;
-    const email = req.auth.payload.email;
-    console.log('Payload complet:', req.auth.payload);
-    console.log('Email cherché:', req.auth.payload[`${process.env.AUTH_AUDIENCE}/email`]);
+
+    // Si l'email n'est pas dans le body, essayer de le récupérer du token
+    const emailFromToken =
+      req.auth.payload.email || req.auth.payload[`${process.env.AUTH_AUDIENCE}/email`];
+
     const user = await User.findOne({ where: { auth0_id } });
     if (!user) {
       const newUser = await User.create({
         auth0_id,
-        firstname: firstname,
-        lastname: lastname,
-        pseudo: pseudo,
-        email: email,
+        firstname,
+        lastname,
+        pseudo,
+        email: emailFromToken,
       });
       return res.status(StatusCodes.CREATED).json(newUser);
     } else {

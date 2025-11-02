@@ -1,6 +1,5 @@
 import 'dotenv/config';
 import { StatusCodes } from 'http-status-codes';
-import { User } from '../models/user.model.js';
 
 export const generateManagementApiToken = async () => {
   try {
@@ -47,6 +46,14 @@ export const registration = async (req, res) => {
       body: payload,
     });
     const result = await response.json();
+
+    if (!response.ok) {
+      return res.status(response.status).json({
+        message: 'Error creating user in Auth0',
+        error: result,
+      });
+    }
+
     const userId = result.user_id;
     const giveRole = await fetch(
       `${process.env.AUTH_ISSUER_BASE_URL}/api/v2/users/${userId}/roles`,
@@ -62,6 +69,13 @@ export const registration = async (req, res) => {
         }),
       }
     );
+
+    if (!giveRole.ok) {
+      return res.status(giveRole.status).json({
+        message: 'User created but error assigning role',
+        error: 'Failed to assign role',
+      });
+    }
 
     if (response.ok && giveRole.ok) {
       const tokenResponse = await fetch(`${process.env.AUTH_ISSUER_BASE_URL}/oauth/token`, {
